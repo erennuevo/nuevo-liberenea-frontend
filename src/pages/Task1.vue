@@ -67,10 +67,7 @@ const newTaskName = ref('')
 // [x] TODO 2: Create a ref for the tasks array (initial value: [])
 const tasks = ref([])
 
-// BONUS 3: Ref for priority level
-const newPriority = ref('Low')
-
-// TODO 3: Create computed() values for total, done, and pending counts
+// [x] TODO 3: Create computed() values for total, done, and pending counts
 const totalCount  = computed(() => tasks.value.length)
 const doneCount   = computed(() => tasks.value.filter(task => task.done === true).length)
 const pendingCount = computed(() => tasks.value.filter(task => task.done === false).length)
@@ -79,6 +76,7 @@ const pendingCount = computed(() => tasks.value.filter(task => task.done === fal
 // - Prevent empty tasks
 // - Push a new task object to tasks.value: { id, name, done }
 // - Clear the input
+// + Added priority 
 function addTask() {
   if (newTaskName.value.trim().length === 0) {
     window.alert("Please enter a valid task.")
@@ -134,20 +132,43 @@ function clearDone() {
 	tasks.value = tasks.value.filter(task => task.done === false)
 }
 
+// BONUS 3: Ref for priority level
+const newPriority = ref('Low')
+
+// For custom design
+const staticBackgroundBoxes = []
+
+// Create 15 floating boxes with random positions and movements
+for (let i = 0; i < 15; i++) {
+  staticBackgroundBoxes.push({
+    style: {
+      '--top': `${Math.floor(Math.random() * 85) + 5}%`,
+      '--left': `${Math.floor(Math.random() * 85) + 5}%`,
+      '--delay': `${Math.random() * 5}s`,
+      '--duration': `${Math.floor(Math.random() * 6) + 7}s`
+    }
+  })
+}
+
 </script>
 
 <template>
 	<div class="bg">
 		<!-- Animated boxes -->
 		<div class="box">
-			<div v-for="box in 10" :key="box"></div>
+			<div 
+				v-for="(box, index) in staticBackgroundBoxes" 
+				:key="index"
+				class="animated-cube"
+				:style="box.style"
+			></div>
 		</div>
 
 		<div class="app">
 			<h1>Task Counter</h1>
 			
 			<!-- [x] TODO 7: Add an input with v-model, @keyup.enter, and placeholder -->
-			<!-- TODO 8: Add an "Add Task" button with @click="addTask" -->
+			<!-- [x] TODO 8: Add an "Add Task" button with @click="addTask" -->
 			<div class="input-row">
 				<!-- your input and button here -->
 				<input v-model="newTaskName" @keyup.enter="addTask" placeholder="Add a task"/>
@@ -160,7 +181,7 @@ function clearDone() {
 				<button :class="{ active: filter === 'pending'}" @click="setFilter('pending')">Pending</button>
 			</div>
 
-			<!-- TODO 9: Display the stats bar using your computed values -->
+			<!-- [x] TODO 9: Display the stats bar using your computed values -->
 			<!-- Format: Total: X | Done: X | Pending: X -->
 			<div class="stats">
 				<!-- your stats here -->
@@ -176,7 +197,7 @@ function clearDone() {
 			<!-- [x] TODO 11: Render the task list using v-for -->
 			<!-- Each item needs: checkbox (v-model), task name (:class done), remove button -->
 			<ul class="task-list">
-				<li v-for="(task, id) in filteredTasks" :key="task.id">
+				<li v-for="task in filteredTasks" :key="task.id">
 
 					<input type="checkbox" v-model="task.done"/>
 
@@ -204,90 +225,40 @@ function clearDone() {
 
 .bg {
 	background: linear-gradient(0deg, white 0%, rgb(255, 255, 208) 50%, rgb(192, 232, 255) 100%);
-  width: 100%;
   position: absolute;
   margin: 0;
   padding: 40px 20px;
-	overflow: hidden
+	overflow: hidden;
+	width: 100vw; 
+  min-height: 100vh;
 }
 
-.box div{
+.animated-cube {
 	position: absolute;
 	width: 60px;
 	height: 60px;
 	background-color: transparent;
 	border: 6px solid rgb(149, 204, 209);
+	opacity: 0;
+	z-index: 1;
+
+	top: var(--top);
+  left: var(--left);
+
+	animation: animate var(--duration, 10s) linear infinite both;
+  animation-delay: var(--delay, 0s);
+  pointer-events: none;
 }
 
-.box div:nth-child(1){
-	top: 12%;
-	left: 90%;
-	animation: animate 10s linear infinite;
-}
-
-.box div:nth-child(2){
-	top: 70%;
-	left: 80%;
-	animation: animate 7s linear infinite;
-}
-
-.box div:nth-child(3){
-	top: 25%;
-	left: 8%;
-	animation: animate 9s linear infinite;
-}
-
-.box div:nth-child(4){
-	top: 30%;
-	left: 20%;
-	animation: animate 8s linear infinite;
-}
-
-.box div:nth-child(5){
-	top: 9%;
-	left: 10%;
-	animation: animate 10s linear infinite;
-}
-
-.box div:nth-child(6){
-	top: 82%;
-	left: 5%;
-	animation: animate 12s linear infinite;
-}
-
-.box div:nth-child(7){
-	top: 92%;
-	left: 80%;
-	animation: animate 11s linear infinite;
-}
-
-.box div:nth-child(8){
-	top: 64%;
-	left: 70%;
-	animation: animate 10s linear infinite;
-}
-
-.box div:nth-child(9){
-	top: 60%;
-	left: 15%;
-	animation: animate 11s linear infinite;
-}
-
-.box div:nth-child(10){
-	top: 43%;
-	left: 78%;
-	animation: animate 8s linear infinite;
-}
-
-@keyframes animate{
-	0%{
-		transform: scale(0) translateY(0) rotate(0);
-		opacity: 1;
-	}
-	100%{
-		transform: scale(1.3) translateY(-90px) rotate(360deg);
-		opacity: 0;
-	}
+@keyframes animate {
+  0% {
+    transform: scale(0) translateY(0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.3) translateY(-90px) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 .app {
@@ -298,6 +269,8 @@ function clearDone() {
   border-radius: 12px;
   box-shadow: 0 2px 12px rgba(0,0,0,0.08);
 	max-width: 30%;
+	position: relative;
+	z-index: 10;
 }
 
 h1 { color: #1B2A4A; margin-bottom: 20px; }
