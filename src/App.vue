@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import TaskListView from "./views/TaskListView.vue";
+import { RouterView } from "vue-router";
+// import Task1 from "./views/Task1.vue";
+// import TaskListView from "./views/TaskListView.vue";
 </script>
 
 <template>
-  <TaskListView />
+  <RouterView />
 </template>

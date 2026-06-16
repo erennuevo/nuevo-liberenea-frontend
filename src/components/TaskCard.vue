@@ -63,23 +63,27 @@ HINTS (read only if stuck)
 <script setup>
 // TODO 1: import defineProps and defineEmits (they are compiler macros — no import needed
 //          but you DO need to call them)
-import { defineProps, defineEmits } from "vue";
+import { ref } from "vue";
 
 // TODO 2: Define the task prop with type Object, required: true
 // const props = defineProps({ ... })
 const props = defineProps({
   task: {
-    id: Date.now(),
-    name: String,
-    done: Boolean,
-    dueDate: String,
-    priority: String,
+    type: Object,
+    required: true,
   },
 });
 
 // TODO 3: Define emits for 'complete' and 'delete'
-// const emit = defineEmits([...])
-const emit = defineEmits(["complete", "delete"]);
+const emit = defineEmits(["complete", "delete", "update"]);
+
+const isEditing = ref(false);
+const editedName = ref(props.task.name);
+
+function saveEdit() {
+  emit("update", props.task.id, editedName.value, "name");
+  isEditing.value = false;
+}
 </script>
 
 <template>
@@ -88,13 +92,27 @@ const emit = defineEmits(["complete", "delete"]);
   <div class="task-card" :class="{ completed: task.done }">
     <div class="task-header">
       <!-- TODO 5: Display the task name -->
-      <span class="name">{{ task.name }}</span>
+      <span v-if="!isEditing" class="name" @click="isEditing = true">
+        {{ task.name }}
+      </span>
+      <input
+        v-if="isEditing"
+        class="input"
+        v-model="editedName"
+        @keyup.enter="saveEdit"
+      />
 
       <!-- TODO 6: Add the named slot for metadata -->
       <!-- <slot name="meta" /> -->
 
       <div class="meta">
-        <select v-model="task.priority" :class="task.priority">
+        <select
+          :value="task.priority"
+          :class="task.priority"
+          @change="
+            emit('update', props.task.id, $event.target.value, 'priority')
+          "
+        >
           <option disabled value="">Priority</option>
           <option value="high">High</option>
           <option value="medium">Medium</option>
@@ -191,5 +209,10 @@ select.medium {
 select.low {
   background-color: rgb(175, 224, 181);
   color: rgb(17, 92, 26);
+}
+.input {
+  background: white;
+  border: 1px solid #e5e7eb;
+  font-weight: bold;
 }
 </style>
