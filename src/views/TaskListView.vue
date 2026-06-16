@@ -51,11 +51,20 @@ function handleComplete(id) {
 function handleDelete(id) {
   tasks.value = tasks.value.filter((task) => task.id !== id);
 }
+
+// function handleUpdate(id) {
+//   const task = tasks.value.find((task) => task.id === id);
+//   task.name = task.name;
+// }
 </script>
 
 <template>
   <div class="task-list-view">
     <h1>My Tasks</h1>
+
+    <span v-if="tasks.length == 0">
+      All tasks have been completed or deleted!
+    </span>
 
     <!-- TODO 4: Render a <TaskCard> for each task using v-for
          - Pass :task="task" as a prop
