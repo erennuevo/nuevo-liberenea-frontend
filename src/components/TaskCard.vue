@@ -73,6 +73,7 @@ const props = defineProps({
     name: String,
     done: Boolean,
     dueDate: String,
+    priority: String,
   },
 });
 
@@ -91,7 +92,14 @@ const emit = defineEmits(["complete", "delete"]);
 
       <!-- TODO 6: Add the named slot for metadata -->
       <!-- <slot name="meta" /> -->
+
       <div class="meta">
+        <select v-model="task.priority" :class="task.priority">
+          <option disabled value="">Priority</option>
+          <option value="high">High</option>
+          <option value="medium">Medium</option>
+          <option value="low">Low</option>
+        </select>
         <slot name="meta" />
       </div>
     </div>
@@ -162,5 +170,26 @@ const emit = defineEmits(["complete", "delete"]);
   border-radius: 6px;
   cursor: pointer;
   font-size: 13px;
+}
+select {
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 4px;
+  margin: 10px;
+  background-color: #f6f6f6;
+}
+select.high {
+  background-color: rgb(255, 203, 203);
+  color: rgb(134, 19, 19);
+}
+select.medium {
+  background-color: rgb(255, 235, 173);
+  color: rgb(143, 111, 17);
+}
+select.low {
+  background-color: rgb(175, 224, 181);
+  color: rgb(17, 92, 26);
 }
 </style>

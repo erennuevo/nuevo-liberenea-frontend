@@ -11,19 +11,33 @@ import TaskCard from "../components/TaskCard.vue";
 // TODO 1: Create a ref() tasks array with at least 3 sample tasks
 // Each task: { id, name, done, dueDate }
 const tasks = ref([
-  { id: 1, name: "Study", done: false, dueDate: "June 17, 2026" },
-  { id: 2, name: "Study again", done: false, dueDate: "June 17, 2026" },
+  {
+    id: 1,
+    name: "Study",
+    done: false,
+    dueDate: "June 17, 2026",
+    priority: "Low",
+  },
+  {
+    id: 2,
+    name: "Study again",
+    done: false,
+    dueDate: "June 17, 2026",
+    priority: "Medium",
+  },
   {
     id: 3,
     name: "Study again and again",
     done: false,
     dueDate: "June 17, 2026",
+    priority: "Medium",
   },
   {
     id: 4,
     name: "Study again and again and again",
     done: false,
     dueDate: "June 17, 2026",
+    priority: "Medium",
   },
 ]);
 
