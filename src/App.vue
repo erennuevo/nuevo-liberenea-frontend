@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Task1 from './pages/Task1.vue'
+import Task2 from "./views/Task2.vue";
 </script>
 
 <template>
-  <Task1 />
+  <Task2 />
 </template>

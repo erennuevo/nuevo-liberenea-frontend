@@ -59,193 +59,211 @@ FILE STRUCTURE (this is a single-file component)
 -->
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed } from "vue";
 
 // [x] TODO 1: Create a ref for the text input value (initial value: '')
-const newTaskName = ref('')
+const newTaskName = ref("");
 
 // [x] TODO 2: Create a ref for the tasks array (initial value: [])
-const tasks = ref([])
+const tasks = ref([]);
 
 // [x] TODO 3: Create computed() values for total, done, and pending counts
-const totalCount  = computed(() => tasks.value.length)
-const doneCount   = computed(() => tasks.value.filter(task => task.done === true).length)
-const pendingCount = computed(() => tasks.value.filter(task => task.done === false).length)
+const totalCount = computed(() => tasks.value.length);
+const doneCount = computed(
+  () => tasks.value.filter((task) => task.done === true).length,
+);
+const pendingCount = computed(
+  () => tasks.value.filter((task) => task.done === false).length,
+);
 
 // [x] TODO 4: Write the addTask() function
 // - Prevent empty tasks
 // - Push a new task object to tasks.value: { id, name, done }
 // - Clear the input
-// + Added priority 
+// + Added priority
 function addTask() {
   if (newTaskName.value.trim().length === 0) {
-    window.alert("Please enter a valid task.")
-    return
+    window.alert("Please enter a valid task.");
+    return;
   }
-  tasks.value.push(
-    {
-        id: Date.now(),
-        name: newTaskName.value,
-        done: false,
-				priority: newPriority.value
-    }
-  )
-  newTaskName.value = ''
+  tasks.value.push({
+    id: Date.now(),
+    name: newTaskName.value,
+    done: false,
+    priority: newPriority.value,
+  });
+  newTaskName.value = "";
 }
 
 // [x] TODO 5: Write toggleTask(id) — flip task.done for the matching task
 function toggleTask(id) {
-  const task = tasks.value.find(task => task.id === id)
-  task.done = !task.done
+  const task = tasks.value.find((task) => task.id === id);
+  task.done = !task.done;
 }
 
 // [x] TODO 6: Write removeTask(id) — filter out the task with this id
 function removeTask(id) {
-  tasks.value = tasks.value.filter(task => task.id !== id)
+  tasks.value = tasks.value.filter((task) => task.id !== id);
 }
 
 // BONUS 1: Filter completed and pending tasks
 // Ref for filter
-const filter = ref('all')
+const filter = ref("all");
 
 // Helper function to change current filter
 function setFilter(inputFilter) {
-	filter.value = inputFilter
+  filter.value = inputFilter;
 }
 
 // Return a filtered list based on currently selected filter
 const filteredTasks = computed(() => {
-	if (filter.value === 'all') {
-		return tasks.value
-	}
-	else if (filter.value === 'done') {
-		return tasks.value.filter(task => task.done === true)
-	}
-	else if (filter.value === 'pending') {
-		return tasks.value.filter(task => task.done === false)
-	}
-})
+  if (filter.value === "all") {
+    return tasks.value;
+  } else if (filter.value === "done") {
+    return tasks.value.filter((task) => task.done === true);
+  } else if (filter.value === "pending") {
+    return tasks.value.filter((task) => task.done === false);
+  }
+});
 
 // BONUS 2: Clear all done tasks
 // Filter out the task list to include only unfinished tasks
 function clearDone() {
-	tasks.value = tasks.value.filter(task => task.done === false)
+  tasks.value = tasks.value.filter((task) => task.done === false);
 }
 
 // BONUS 3: Ref for priority level
-const newPriority = ref('Low')
+const newPriority = ref("Low");
 
 // For custom design
-const staticBackgroundBoxes = []
+const staticBackgroundBoxes = [];
 
 // Create 15 floating boxes with random positions and movements
 for (let i = 0; i < 15; i++) {
   staticBackgroundBoxes.push({
     style: {
-      '--top': `${Math.floor(Math.random() * 85) + 5}%`,
-      '--left': `${Math.floor(Math.random() * 85) + 5}%`,
-      '--delay': `${Math.random() * 5}s`,
-      '--duration': `${Math.floor(Math.random() * 6) + 7}s`
-    }
-  })
+      "--top": `${Math.floor(Math.random() * 85) + 5}%`,
+      "--left": `${Math.floor(Math.random() * 85) + 5}%`,
+      "--delay": `${Math.random() * 5}s`,
+      "--duration": `${Math.floor(Math.random() * 6) + 7}s`,
+    },
+  });
 }
-
 </script>
 
 <template>
-	<div class="bg">
-		<!-- Animated boxes -->
-		<div class="box">
-			<div 
-				v-for="(box, index) in staticBackgroundBoxes" 
-				:key="index"
-				class="animated-cube"
-				:style="box.style"
-			></div>
-		</div>
+  <div class="bg">
+    <!-- Animated boxes -->
+    <div class="box">
+      <div
+        v-for="(box, index) in staticBackgroundBoxes"
+        :key="index"
+        class="animated-cube"
+        :style="box.style"
+      ></div>
+    </div>
 
-		<div class="app">
-			<h1>Task Counter</h1>
-			
-			<!-- [x] TODO 7: Add an input with v-model, @keyup.enter, and placeholder -->
-			<!-- [x] TODO 8: Add an "Add Task" button with @click="addTask" -->
-			<div class="input-row">
-				<!-- your input and button here -->
-				<input v-model="newTaskName" @keyup.enter="addTask" placeholder="Add a task"/>
-				<button @click="addTask">Add</button>
-			</div>
+    <div class="app">
+      <h1>Task Counter</h1>
 
-			<div class="filters">
-				<button :class="{ active: filter === 'all'}" @click="setFilter('all')">All</button>
-				<button :class="{ active: filter === 'done'}" @click="setFilter('done')">Done</button>
-				<button :class="{ active: filter === 'pending'}" @click="setFilter('pending')">Pending</button>
-			</div>
+      <!-- [x] TODO 7: Add an input with v-model, @keyup.enter, and placeholder -->
+      <!-- [x] TODO 8: Add an "Add Task" button with @click="addTask" -->
+      <div class="input-row">
+        <!-- your input and button here -->
+        <input
+          v-model="newTaskName"
+          @keyup.enter="addTask"
+          placeholder="Add a task"
+        />
+        <button @click="addTask">Add</button>
+      </div>
 
-			<!-- [x] TODO 9: Display the stats bar using your computed values -->
-			<!-- Format: Total: X | Done: X | Pending: X -->
-			<div class="stats">
-				<!-- your stats here -->
-				<span>Total: {{ totalCount }} | </span>
-				<span>Done: {{ doneCount }} | </span>
-				<span>Pending: {{ pendingCount }}</span>
-			</div>
+      <div class="filters">
+        <button :class="{ active: filter === 'all' }" @click="setFilter('all')">
+          All
+        </button>
+        <button
+          :class="{ active: filter === 'done' }"
+          @click="setFilter('done')"
+        >
+          Done
+        </button>
+        <button
+          :class="{ active: filter === 'pending' }"
+          @click="setFilter('pending')"
+        >
+          Pending
+        </button>
+      </div>
 
-			<!-- [x] TODO 10: Show this message only when the task list is empty -->
-			<!-- <p class="empty">No tasks yet. Add one above!</p> -->
-			<span v-if="tasks.length == 0">No tasks yet. Add one above!</span>
+      <!-- [x] TODO 9: Display the stats bar using your computed values -->
+      <!-- Format: Total: X | Done: X | Pending: X -->
+      <div class="stats">
+        <!-- your stats here -->
+        <span>Total: {{ totalCount }} | </span>
+        <span>Done: {{ doneCount }} | </span>
+        <span>Pending: {{ pendingCount }}</span>
+      </div>
 
-			<!-- [x] TODO 11: Render the task list using v-for -->
-			<!-- Each item needs: checkbox (v-model), task name (:class done), remove button -->
-			<ul class="task-list">
-				<li v-for="task in filteredTasks" :key="task.id">
+      <!-- [x] TODO 10: Show this message only when the task list is empty -->
+      <!-- <p class="empty">No tasks yet. Add one above!</p> -->
+      <span v-if="tasks.length == 0">No tasks yet. Add one above!</span>
 
-					<input type="checkbox" v-model="task.done"/>
+      <!-- [x] TODO 11: Render the task list using v-for -->
+      <!-- Each item needs: checkbox (v-model), task name (:class done), remove button -->
+      <ul class="task-list">
+        <li v-for="task in filteredTasks" :key="task.id">
+          <input type="checkbox" v-model="task.done" />
 
-					<span :class="{done: task.done}">{{ task.name }}</span>
+          <span :class="{ done: task.done }">{{ task.name }}</span>
 
-					<select v-model="task.priority" :class="task.priority">
-						<option disabled value="">Priority</option>
-						<option value="high">High</option>
-						<option value="medium">Medium</option>
-						<option value="low">Low</option>
-					</select>
+          <select v-model="task.priority" :class="task.priority">
+            <option disabled value="">Priority</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
 
-					<button @click="removeTask(task.id)">X</button>
-				</li>
-			</ul>
+          <button @click="removeTask(task.id)">X</button>
+        </li>
+      </ul>
 
-			<div>
-				<button class="clear-button" @click="clearDone">Clear All Done</button>
-			</div>
+      <div>
+        <button class="clear-button" @click="clearDone">Clear All Done</button>
+      </div>
+    </div>
   </div>
-	</div>
 </template>
 
 <style scoped>
-
 .bg {
-	background: linear-gradient(0deg, white 0%, rgb(255, 255, 208) 50%, rgb(192, 232, 255) 100%);
+  background: linear-gradient(
+    0deg,
+    white 0%,
+    rgb(255, 255, 208) 50%,
+    rgb(192, 232, 255) 100%
+  );
   position: absolute;
   margin: 0;
   padding: 40px 20px;
-	overflow: hidden;
-	width: 100vw; 
+  overflow: hidden;
+  width: 100vw;
   min-height: 100vh;
 }
 
 .animated-cube {
-	position: absolute;
-	width: 60px;
-	height: 60px;
-	background-color: transparent;
-	border: 6px solid rgb(149, 204, 209);
-	opacity: 0;
-	z-index: 1;
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background-color: transparent;
+  border: 6px solid rgb(149, 204, 209);
+  opacity: 0;
+  z-index: 1;
 
-	top: var(--top);
+  top: var(--top);
   left: var(--left);
 
-	animation: animate var(--duration, 10s) linear infinite both;
+  animation: animate var(--duration, 10s) linear infinite both;
   animation-delay: var(--delay, 0s);
   pointer-events: none;
 }
@@ -267,13 +285,16 @@ for (let i = 0; i < 15; i++) {
   padding: 24px;
   background: white;
   border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-	max-width: 30%;
-	position: relative;
-	z-index: 10;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  max-width: 30%;
+  position: relative;
+  z-index: 10;
 }
 
-h1 { color: #1B2A4A; margin-bottom: 20px; }
+h1 {
+  color: #1b2a4a;
+  margin-bottom: 20px;
+}
 
 .input-row {
   display: flex;
@@ -291,7 +312,7 @@ h1 { color: #1B2A4A; margin-bottom: 20px; }
 
 .input-row button {
   padding: 8px 16px;
-  background: #42B883;
+  background: #42b883;
   color: white;
   border: none;
   border-radius: 6px;
@@ -354,10 +375,10 @@ h1 { color: #1B2A4A; margin-bottom: 20px; }
 }
 
 .filters {
-	display: flex;
-	gap: 5px;
-	justify-content: center;
-	margin-bottom: 16px;
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
 .filters button {
@@ -373,45 +394,44 @@ h1 { color: #1B2A4A; margin-bottom: 20px; }
 }
 
 .filters button.active {
-  background-color: #42B883;
-	border: none;
-	border-radius: 4px;
+  background-color: #42b883;
+  border: none;
+  border-radius: 4px;
   color: white;
 }
 
 select {
-	border: none;
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 12px;
-	padding: 4px;
-	background-color: #f6f6f6;
+  padding: 4px;
+  background-color: #f6f6f6;
 }
 
 select.high {
-	background-color: rgb(255, 203, 203);
-	color: rgb(134, 19, 19)
+  background-color: rgb(255, 203, 203);
+  color: rgb(134, 19, 19);
 }
 
 select.medium {
-	background-color: rgb(255, 235, 173);
-	color: rgb(143, 111, 17)
+  background-color: rgb(255, 235, 173);
+  color: rgb(143, 111, 17);
 }
 
 select.low {
-	background-color: rgb(175, 224, 181);
-	color: rgb(17, 92, 26)
+  background-color: rgb(175, 224, 181);
+  color: rgb(17, 92, 26);
 }
 
 .clear-button {
-	margin: 10px;
+  margin: 10px;
   padding: 8px 16px;
-  background: #42B883;
+  background: #42b883;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
 }
-
 </style>
