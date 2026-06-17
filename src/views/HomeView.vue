@@ -29,11 +29,6 @@ const showErrorBanner = computed(() => {
       ⚠️ Task not found. Redirected back to home.
     </div>
 
-    <nav class="page-nav">
-      <!-- TODO 3: Add a RouterLink to /about -->
-      <RouterLink to="/about">About</RouterLink>
-    </nav>
-
     <!-- TODO 4: Render each task as a RouterLink to /task/:id -->
     <!-- Use <RouterLink :to="`/task/${task.id}`"> as the wrapper -->
     <ul class="task-list">
@@ -53,10 +48,12 @@ const showErrorBanner = computed(() => {
   margin: 40px auto;
   padding: 24px;
   font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 10;
 }
 h1 {
   color: #1b2a4a;
-  margin-bottom: 16px;
+  padding: 16px;
 }
 .error-banner {
   background: #fef3c7;
@@ -66,14 +63,6 @@ h1 {
   margin-bottom: 16px;
   color: #92400e;
   font-size: 14px;
-}
-.page-nav {
-  margin-bottom: 20px;
-}
-.page-nav a {
-  color: #42b883;
-  text-decoration: none;
-  font-weight: 600;
 }
 .task-list {
   list-style: none;

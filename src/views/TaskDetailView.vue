@@ -15,37 +15,6 @@ const router = useRouter();
 
 const taskStore = useTaskStore();
 
-// const tasks = ref([
-//   {
-//     id: 1,
-//     name: "Study",
-//     done: false,
-//     dueDate: "June 17, 2026",
-//     priority: "Low",
-//   },
-//   {
-//     id: 2,
-//     name: "Study again",
-//     done: false,
-//     dueDate: "June 17, 2026",
-//     priority: "Medium",
-//   },
-//   {
-//     id: 3,
-//     name: "Study again and again",
-//     done: false,
-//     dueDate: "June 17, 2026",
-//     priority: "Medium",
-//   },
-//   {
-//     id: 4,
-//     name: "Study again and again and again",
-//     done: false,
-//     dueDate: "June 17, 2026",
-//     priority: "Medium",
-//   },
-// ]);
-
 // TODO 2: Find the task matching the route param
 // Remember: route.params.id is a STRING — cast to Number before comparing
 const task = computed(() =>
@@ -68,7 +37,7 @@ function goBack() {
       <h1>{{ task.name }}</h1>
       <p>
         Status:
-        {{ task.done }}
+        {{ task.done ? "Done" : "Not Done" }}
       </p>
       <p>
         Due:
@@ -86,21 +55,31 @@ function goBack() {
 
 <style scoped>
 .detail-view {
-  max-width: 520px;
-  margin: 40px auto;
-  padding: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  padding: 32px 24px;
+  box-sizing: border-box;
+  margin: 200px auto;
+  max-width: 40%;
   font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 10;
 }
 .back-btn {
-  background: none;
-  border: 1px solid #ddd;
+  background-color: #66a6ea;
+  color: white;
+  border: none;
   border-radius: 6px;
-  padding: 6px 14px;
+  padding: 8px 16px;
+  font-weight: 600;
   cursor: pointer;
   margin-bottom: 20px;
+  transition: background-color 0.2s ease;
 }
+
 .back-btn:hover {
-  background: #f3f4f6;
+  background-color: #4b92de;
 }
 h1 {
   color: #1b2a4a;

@@ -58,9 +58,10 @@ import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import TaskDetailView from "../views/TaskDetailView.vue";
 import AboutView from "../views/AboutView.vue";
+import StatView from "../views/StatsView.vue";
 
 // TODO 2: Import your Pinia task store so the guard can check if a task exists
-// import { useTaskStore } from '@/stores/taskStore'
+import { useTaskStore } from "../stores/taskStore.js";
 
 const routes = [
   // TODO 3: Add a redirect from '/' to '/home'
@@ -79,6 +80,8 @@ const routes = [
 
   // TODO 6: Add the /about route
   { path: "/about", component: AboutView },
+
+  { path: "/stats", component: StatView },
 ];
 
 const router = createRouter({
@@ -92,10 +95,19 @@ const router = createRouter({
 // - If so, get the task store and check if a task with to.params.id exists
 // - If NOT found: next({ path: '/home', query: { error: 'notfound' } })
 // - If found (or not a protected route): next()
-// router.beforeEach((to, from, next) => {
-//   if (to.meta.requiresTask == true) {
-//   }
-//   next(); // don't remove this — it must always be called
-// });
+router.beforeEach((to, from, next) => {
+  const taskStore = useTaskStore();
+
+  if (to.meta.requiresTask) {
+    const taskExists = taskStore.tasks.some(
+      (task) => task.id === Number(to.params.id),
+    );
+
+    if (!taskExists) {
+      return next({ path: "/home", query: { error: "notfound" } });
+    }
+  }
+  next();
+});
 
 export default router;
