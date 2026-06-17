@@ -66,6 +66,7 @@ function goBack() {
   position: relative;
   z-index: 10;
 }
+
 .back-btn {
   background-color: #66a6ea;
   color: white;
@@ -81,11 +82,13 @@ function goBack() {
 .back-btn:hover {
   background-color: #4b92de;
 }
+
 h1 {
   color: #1b2a4a;
   font-size: 24px;
   margin-bottom: 12px;
 }
+
 p {
   color: #4a5568;
   font-size: 15px;

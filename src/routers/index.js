@@ -54,43 +54,33 @@
 
 import { createRouter, createWebHistory } from "vue-router";
 
-// TODO 1: Import your view components
+// Import your view components
 import HomeView from "../views/HomeView.vue";
 import TaskDetailView from "../views/TaskDetailView.vue";
 import AboutView from "../views/AboutView.vue";
 import StatView from "../views/StatsView.vue";
 
-// TODO 2: Import your Pinia task store so the guard can check if a task exists
+// Import your Pinia task store so the guard can check if a task exists
 import { useTaskStore } from "../stores/taskStore.js";
 
 const routes = [
-  // TODO 3: Add a redirect from '/' to '/home'
   { path: "/", redirect: "/home" },
-
-  // TODO 4: Add the /home route
   { path: "/home", component: HomeView },
-
-  // TODO 5: Add the /task/:id dynamic route
-  // Add meta: { requiresTask: true } so the guard knows to protect it
   {
     path: "/task/:id",
     component: TaskDetailView,
     meta: { requiresTask: true },
   },
-
-  // TODO 6: Add the /about route
   { path: "/about", component: AboutView },
-
   { path: "/stats", component: StatView },
 ];
 
 const router = createRouter({
-  // TODO 7: Use createWebHistory() for clean URLs
   history: createWebHistory(),
   routes,
 });
 
-// TODO 8: Add a beforeEach navigation guard
+// beforeEach navigation guard
 // - Check if to.meta.requiresTask is true
 // - If so, get the task store and check if a task with to.params.id exists
 // - If NOT found: next({ path: '/home', query: { error: 'notfound' } })

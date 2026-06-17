@@ -9,7 +9,7 @@ import { ref } from "vue";
 import TaskCard from "../components/TaskCard.vue";
 import AnimatedBackground from "../components/AnimatedBackground.vue";
 
-// TODO 1: Create a ref() tasks array with at least 3 sample tasks
+// Create a ref() tasks array with at least 3 sample tasks
 // Each task: { id, name, done, dueDate }
 const tasks = ref([
   {
@@ -42,13 +42,13 @@ const tasks = ref([
   },
 ]);
 
-// TODO 2: Write handleComplete(id) — toggle the done state of the task with this id
+// Write handleComplete(id) — toggle the done state of the task with this id
 function handleComplete(id) {
   const task = tasks.value.find((task) => task.id === id);
   task.done = !task.done;
 }
 
-// TODO 3: Write handleDelete(id) — remove the task with this id from the array
+// Write handleDelete(id) — remove the task with this id from the array
 function handleDelete(id) {
   tasks.value = tasks.value.filter((task) => task.id !== id);
 }
@@ -72,7 +72,7 @@ function handleUpdate(id, newValue, type) {
         All tasks have been completed or deleted!
       </span>
 
-      <!-- TODO 4: Render a <TaskCard> for each task using v-for
+      <!-- Render a <TaskCard> for each task using v-for
          - Pass :task="task" as a prop
          - Listen @complete="handleComplete"
          - Listen @delete="handleDelete"
@@ -101,6 +101,7 @@ function handleUpdate(id, newValue, type) {
   position: relative;
   z-index: 10;
 }
+
 h1 {
   color: #1b2a4a;
   margin-bottom: 24px;

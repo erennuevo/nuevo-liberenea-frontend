@@ -3,10 +3,8 @@ import { computed, ref } from "vue";
 import { useTaskStore } from "../stores/taskStore.js";
 import AnimatedBackground from "../components/AnimatedBackground.vue";
 
-// Initialize the Pinia task store
 const taskStore = useTaskStore();
 
-// Core computed breakdowns reading directly from Pinia state
 const totalCount = computed(() => taskStore.tasks.length);
 const doneCount = computed(
   () => taskStore.tasks.filter((task) => task.done === true).length,
@@ -15,7 +13,6 @@ const pendingCount = computed(
   () => taskStore.tasks.filter((task) => task.done === false).length,
 );
 
-// Filtering System for the local breakdown list
 const currentFilter = ref("all");
 
 function setFilter(filterValue) {
@@ -31,11 +28,6 @@ const filteredTasks = computed(() => {
     return taskStore.tasks.filter((task) => task.done === false);
   }
 });
-
-// Priority map mapping to match your exact CSS select color classes dynamically
-function getPriorityClass(priority) {
-  return priority ? priority.toLowerCase() : "low";
-}
 </script>
 
 <template>
