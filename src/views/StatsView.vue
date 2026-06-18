@@ -1,17 +1,11 @@
 <script setup>
 import { computed, ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useTaskStore } from "../stores/taskStore.js";
 import AnimatedBackground from "../components/AnimatedBackground.vue";
 
 const taskStore = useTaskStore();
-
-const totalCount = computed(() => taskStore.tasks.length);
-const doneCount = computed(
-  () => taskStore.tasks.filter((task) => task.done === true).length,
-);
-const pendingCount = computed(
-  () => taskStore.tasks.filter((task) => task.done === false).length,
-);
+const { totalCount, doneCount, pendingCount } = storeToRefs(taskStore);
 
 const currentFilter = ref("all");
 

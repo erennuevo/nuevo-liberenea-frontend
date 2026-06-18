@@ -135,21 +135,6 @@ function clearDone() {
 
 // BONUS 3: Ref for priority level
 const newPriority = ref("Low");
-
-// For custom design
-const staticBackgroundBoxes = [];
-
-// Create 15 floating boxes with random positions and movements
-for (let i = 0; i < 15; i++) {
-  staticBackgroundBoxes.push({
-    style: {
-      "--top": `${Math.floor(Math.random() * 85) + 5}%`,
-      "--left": `${Math.floor(Math.random() * 85) + 5}%`,
-      "--delay": `${Math.random() * 5}s`,
-      "--duration": `${Math.floor(Math.random() * 6) + 7}s`,
-    },
-  });
-}
 </script>
 
 <template>

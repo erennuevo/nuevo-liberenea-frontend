@@ -57,6 +57,7 @@ import { createRouter, createWebHistory } from "vue-router";
 // Import your view components
 import HomeView from "../views/HomeView.vue";
 import TaskDetailView from "../views/TaskDetailView.vue";
+import TaskListView from "../views/TaskDetailView.vue";
 import AboutView from "../views/AboutView.vue";
 import StatView from "../views/StatsView.vue";
 
