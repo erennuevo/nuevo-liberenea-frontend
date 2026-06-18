@@ -142,10 +142,7 @@ const newPriority = ref("Low");
     <div class="app">
       <h1>Task Counter</h1>
 
-      <!-- [x] TODO 7: Add an input with v-model, @keyup.enter, and placeholder -->
-      <!-- [x] TODO 8: Add an "Add Task" button with @click="addTask" -->
       <div class="input-row">
-        <!-- your input and button here -->
         <input
           v-model="newTaskName"
           @keyup.enter="addTask"
@@ -172,21 +169,14 @@ const newPriority = ref("Low");
         </button>
       </div>
 
-      <!-- [x] TODO 9: Display the stats bar using your computed values -->
-      <!-- Format: Total: X | Done: X | Pending: X -->
       <div class="stats">
-        <!-- your stats here -->
         <span>Total: {{ totalCount }} | </span>
         <span>Done: {{ doneCount }} | </span>
         <span>Pending: {{ pendingCount }}</span>
       </div>
 
-      <!-- [x] TODO 10: Show this message only when the task list is empty -->
-      <!-- <p class="empty">No tasks yet. Add one above!</p> -->
       <span v-if="tasks.length == 0">No tasks yet. Add one above!</span>
 
-      <!-- [x] TODO 11: Render the task list using v-for -->
-      <!-- Each item needs: checkbox (v-model), task name (:class done), remove button -->
       <ul class="task-list">
         <li v-for="task in filteredTasks" :key="task.id">
           <input type="checkbox" v-model="task.done" />

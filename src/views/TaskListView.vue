@@ -3,6 +3,7 @@
   DAY 2 ASSIGNMENT — TaskListView.vue (Parent Component)
   This file renders a list of TaskCard components.
 =============================================================
+* Note: updated TaskListView is now HomeView
 -->
 <script setup>
 import { ref } from "vue";

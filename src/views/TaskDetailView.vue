@@ -9,19 +9,15 @@ import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useTaskStore } from "../stores/taskStore.js";
 
-// TODO 1: Get the current route and router instances
 const route = useRoute();
 const router = useRouter();
 
 const taskStore = useTaskStore();
 
-// TODO 2: Find the task matching the route param
-// Remember: route.params.id is a STRING — cast to Number before comparing
 const task = computed(() =>
   taskStore.tasks.find((t) => t.id === Number(route.params.id)),
 );
 
-// TODO 3: Write goBack() using router.push() to navigate to '/home'
 function goBack() {
   router.push("/home");
 }
@@ -29,11 +25,9 @@ function goBack() {
 
 <template>
   <div class="detail-view">
-    <!-- TODO 4: Show this only if task is found (v-if="task") -->
     <div v-if="task">
       <button class="back-btn" @click="goBack">← Back</button>
 
-      <!-- TODO 5: Display task.name, task.dueDate, and task.done status -->
       <h1>{{ task.name }}</h1>
       <p>
         Status:

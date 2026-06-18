@@ -9,19 +9,23 @@ export const useTaskStore = defineStore(
     const allTasks = ref({});
     const nextId = ref(1);
 
+    // Function to return a user's tasks
     const tasks = computed(() => {
       const currentUsername = userStore.currentUser;
 
+      // If no user is logged in
       if (!userStore.isLoggedIn || currentUsername === "Guest") {
         return [];
       }
+
+      // If the current user has no tasks array yet
       if (!allTasks.value[currentUsername]) {
         allTasks.value[currentUsername] = [];
       }
+
       return allTasks.value[currentUsername];
     });
 
-    // TODO 3: Define getters using computed()
     const totalCount = computed(() => tasks.value.length);
     const doneCount = computed(
       () => tasks.value.filter((task) => task.done === true).length,
@@ -31,6 +35,7 @@ export const useTaskStore = defineStore(
     );
 
     function addTask(newTask) {
+      // Users not logged in cannot add tasks
       if (!userStore.isLoggedIn || !newTask.trim()) {
         return;
       }
