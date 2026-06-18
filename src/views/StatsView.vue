@@ -6,22 +6,6 @@ import AnimatedBackground from "../components/AnimatedBackground.vue";
 
 const taskStore = useTaskStore();
 const { totalCount, doneCount, pendingCount } = storeToRefs(taskStore);
-
-const currentFilter = ref("all");
-
-function setFilter(filterValue) {
-  currentFilter.value = filterValue;
-}
-
-const filteredTasks = computed(() => {
-  if (currentFilter.value === "all") {
-    return taskStore.tasks;
-  } else if (currentFilter.value === "done") {
-    return taskStore.tasks.filter((task) => task.done === true);
-  } else if (currentFilter.value === "pending") {
-    return taskStore.tasks.filter((task) => task.done === false);
-  }
-});
 </script>
 
 <template>

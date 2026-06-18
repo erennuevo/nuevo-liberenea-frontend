@@ -1,9 +1,3 @@
-<!--
-=============================================================
-  DAY 3 ASSIGNMENT — HomeView.vue
-  Shows the task list with router-link navigation to each task
-=============================================================
--->
 <script setup>
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
@@ -24,9 +18,7 @@ function handleAdd() {
 
 // Read route.query.error — if it equals 'notfound', show a warning banner
 const showErrorBanner = computed(() => {
-  if (route.query.error === "notfound") {
-    return true;
-  }
+  return route.query.error === "notfound";
 });
 </script>
 
@@ -34,7 +26,6 @@ const showErrorBanner = computed(() => {
   <div class="home-view">
     <h1>📝 My Tasks</h1>
 
-    <!-- Show a warning banner if showErrorBanner is true -->
     <div class="error-banner" v-if="showErrorBanner">
       ⚠️ Task not found. Redirected back to home.
     </div>
@@ -45,22 +36,27 @@ const showErrorBanner = computed(() => {
         placeholder="New task..."
         @keyup.enter="handleAdd"
       />
-      <button @click="handleAdd">Add</button>
+      <button class="add-btn" @click="handleAdd">Add</button>
     </div>
 
-    <span v-if="taskStore.tasks.length == 0">
-      All tasks have been completed or deleted!
-    </span>
+    <div v-if="tasks.length === 0" class="empty-state">
+      There are currently no tasks.
+    </div>
 
-    <!-- Render each task as a RouterLink to /task/:id -->
     <ul class="task-list">
-      <li v-for="task in taskStore.tasks" :key="task.id">
-        <!-- Wrap this in a RouterLink -->
-        <input type="checkbox" v-model="task.done" @click="toggleTask" />
-        <RouterLink :to="`/task/${task.id}`">
+      <li v-for="task in tasks" :key="task.id" class="task-item">
+        <input
+          type="checkbox"
+          class="task-checkbox"
+          :checked="task.done"
+          @change="toggleTask(task.id)"
+        />
+
+        <RouterLink :to="`/task/${task.id}`" class="task-link">
           <span :class="{ done: task.done }">{{ task.name }}</span>
         </RouterLink>
-        <button @click="removeTask(task.id)">X</button>
+
+        <button class="delete-btn" @click="removeTask(task.id)">×</button>
       </li>
     </ul>
   </div>
@@ -78,7 +74,8 @@ const showErrorBanner = computed(() => {
 
 h1 {
   color: #1b2a4a;
-  padding: 16px;
+  padding: 16px 0;
+  margin: 0;
 }
 
 .error-banner {
@@ -91,42 +88,111 @@ h1 {
   font-size: 14px;
 }
 
+.input-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.input-row input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-row input:focus {
+  border-color: rgb(56, 150, 213);
+}
+
+.add-btn {
+  background-color: rgb(56, 150, 213);
+  color: white;
+  border: none;
+  padding: 0 20px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-btn:hover {
+  background-color: rgb(46, 130, 193);
+}
+
+.empty-state {
+  color: #718096;
+  font-style: italic;
+  padding: 16px 0;
+}
+
 .task-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.task-list li {
-  padding: 12px;
+.task-item {
+  padding: 12px 16px;
   background: white;
   border-radius: 8px;
   margin-bottom: 8px;
   border: 1px solid #eee;
-  cursor: pointer;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 12px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
-.task-list li:hover {
-  border-color: #42b883;
+.task-item:hover {
+  border-color: #73c8ed;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.done {
+.task-checkbox {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.task-link {
+  flex: 1;
+  text-decoration: none;
+  color: #2d3748;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.task-link:hover {
+  color: rgb(46, 130, 193);
+}
+
+.task-link .done {
   text-decoration: line-through;
   color: #9ca3af;
 }
 
-.input-row {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 16px;
+.delete-btn {
+  background: none;
+  border: none;
+  color: #a0aec0;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
-.input-row input {
-  flex: 1;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
+
+.delete-btn:hover {
+  background-color: #fed7d7;
+  color: #e06767;
 }
 </style>
