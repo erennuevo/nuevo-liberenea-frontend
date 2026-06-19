@@ -9,6 +9,7 @@ import { ref, computed } from "vue";
 import { useFetch } from "../composables/useFetch.js";
 
 const filter = ref("done"); // 'all' | 'done' | 'pending'
+const searchInput = ref("");
 
 // TODO 1: Call useFetch with the JSONPlaceholder todos endpoint
 // Rename 'data' to 'todos' using destructuring alias syntax
@@ -16,6 +17,7 @@ const {
   data: todos,
   loading,
   error,
+  retry,
 } = useFetch("https://jsonplaceholder.typicode.com/todos");
 
 // TODO 2: Create a filteredTodos computed() that:
@@ -24,32 +26,46 @@ const {
 // const filteredTodos = computed(() => { ... })
 const filteredTodos = computed(() => {
   if (!todos.value) return []; // still loading
-  if (filter.value === "all") return todos.value.slice(0, 20);
-  if (filter.value === "done")
-    return todos.value.filter((todo) => todo.completed);
+
+  let result = todos.value;
+
+  if (searchInput.value) {
+    const search = searchInput.value.toLowerCase();
+    result = result.filter((todo) => todo.title.toLowerCase().includes(search));
+  }
+  if (filter.value === "all") result = result.slice(0, 20);
+  if (filter.value === "done") result = result.filter((todo) => todo.completed);
   if (filter.value === "pending")
-    return todos.value.filter((todo) => !todo.completed);
-  return [];
+    result = result.filter((todo) => !todo.completed);
+  return result;
 });
 
 function setFilter(newFilter) {
   filter.value = newFilter;
-  console.log(filter.value);
 }
 </script>
 
 <template>
   <div class="todo-view">
+    <RouterLink :to="`/users`">
+      <button class="nav-button">Go to Users List →</button>
+    </RouterLink>
+
     <h1>📋 Todo List</h1>
     <p class="subtitle">Loaded from JSONPlaceholder API</p>
 
     <!-- TODO 3: Show a loading message/spinner while loading is true -->
-    <span v-if="loading">Loading...</span>
+    <div v-if="loading">Loading...</div>
 
     <!-- TODO 4: Show an error message if error has a value -->
-    <span v-if="error">{{ error }}</span>
+    <div v-else-if="error" class="error-box">
+      {{ error }}
+      <button class="retry-button" @click="retry">Retry</button>
+    </div>
+
     <!-- TODO 5: Show the content block when NOT loading and NO error -->
-    <div>
+    <div v-else>
+      <input v-model="searchInput" placeholder="Search..." class="search-bar" />
       <!-- Filter buttons -->
       <div class="filters">
         <!-- TODO 6: Three buttons — All, Done, Pending -->
@@ -98,22 +114,38 @@ function setFilter(newFilter) {
   margin: 40px auto;
   padding: 24px;
   font-family: Arial, sans-serif;
+  position: relative;
+  z-index: 10;
 }
+
+.nav-button {
+  background: #42b883;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 h1 {
   color: #1b2a4a;
   margin-bottom: 4px;
 }
+
 .subtitle {
   color: #9ca3af;
   font-size: 13px;
   margin-bottom: 20px;
 }
+
 .loading {
   text-align: center;
   padding: 48px;
   color: #42b883;
   font-size: 16px;
 }
+
 .error-box {
   background: #fef2f2;
   border: 1px solid #fca5a5;
@@ -121,11 +153,25 @@ h1 {
   padding: 16px;
   color: #dc2626;
 }
+
+.search-bar {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+
 .filters {
   display: flex;
+  justify-content: center;
   gap: 8px;
   margin-bottom: 16px;
 }
+
 .filters button {
   padding: 6px 16px;
   border: 1px solid #ddd;
@@ -134,16 +180,19 @@ h1 {
   cursor: pointer;
   font-size: 13px;
 }
+
 .filters button.active {
   background: #42b883;
   color: white;
   border-color: #42b883;
 }
+
 .todo-list {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .todo-list li {
   display: flex;
   align-items: center;
@@ -155,20 +204,33 @@ h1 {
   border: 1px solid #eee;
   font-size: 14px;
 }
+
 .todo-list li.done-item {
   opacity: 0.6;
 }
+
 .todo-list li span {
   flex: 1;
 }
+
 .completed-text {
   text-decoration: line-through;
   color: #9ca3af;
 }
+
 .count {
   font-size: 13px;
   color: #9ca3af;
   margin-top: 12px;
   text-align: right;
+}
+
+.retry-button {
+  color: #b74848;
+  background-color: #fca5a5;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
 }
 </style>

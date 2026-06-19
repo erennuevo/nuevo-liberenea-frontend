@@ -68,21 +68,27 @@ export function useFetch(url) {
   const loading = ref(true);
   const error = ref(null);
 
-  onMounted(async () => {
+  const fetchData = async () => {
+    loading.value = true;
+    error.value = null;
+
     try {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error("`HTTP ${response.status}`");
+        throw new Error("Error fetching url.");
       }
 
       data.value = await response.json();
     } catch (e) {
-      error.value = error.message;
-      console.error("Error fetching users:", error);
+      error.value = e.message;
+      console.error("Error fetching users:", e);
     } finally {
       loading.value = false;
     }
-  });
-  return { data, loading, error };
+  };
+
+  onMounted(fetchData);
+
+  return { data, loading, error, retry: fetchData };
 }

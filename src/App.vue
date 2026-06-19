@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { RouterView } from "vue-router";
 import AnimatedBackground from "./components/AnimatedBackground.vue";
-import Navbar from "./components/Navbar.vue";
+// import Navbar from "./components/Navbar.vue";
 </script>
 
 <template>
-  <header>
-    <Navbar />
-  </header>
   <main>
     <AnimatedBackground>
       <RouterView v-slot="{ Component }">

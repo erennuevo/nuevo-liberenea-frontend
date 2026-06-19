@@ -36,7 +36,7 @@ const showErrorBanner = computed(() => {
         placeholder="New task..."
         @keyup.enter="handleAdd"
       />
-      <button class="add-btn" @click="handleAdd">Add</button>
+      <button class="add-btn" @click="handdleAdd">Add</button>
     </div>
 
     <div v-if="tasks.length === 0" class="empty-state">
