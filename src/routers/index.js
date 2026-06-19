@@ -60,6 +60,7 @@ import TaskDetailView from "../views/TaskDetailView.vue";
 import TaskListView from "../views/TaskDetailView.vue";
 import AboutView from "../views/AboutView.vue";
 import StatView from "../views/StatsView.vue";
+import TodoListView from "../views/TodoListView.vue";
 
 // Import your Pinia task store so the guard can check if a task exists
 import { useTaskStore } from "../stores/taskStore.js";
@@ -74,6 +75,7 @@ const routes = [
   },
   { path: "/about", component: AboutView },
   { path: "/stats", component: StatView },
+  { path: "/todo", component: TodoListView },
 ];
 
 const router = createRouter({
